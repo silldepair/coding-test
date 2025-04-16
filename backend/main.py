@@ -5,6 +5,16 @@ import json
 
 app = FastAPI()
 
+#cors for next js default port and host
+origins = ["http://localhost:3000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Load dummy data
 with open("dummyData.json", "r") as f:
     DUMMY_DATA = json.load(f)
