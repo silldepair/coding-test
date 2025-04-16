@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import Chip from "./components/chip";
+import DealSection from "./components/deal-section";
+import ClientSection from "./components/client-section";
+import { Colors } from "../utils/colors";
 
 export default function Home() {
   const [dataSales, setDataSales] = useState([]);
@@ -11,6 +15,7 @@ export default function Home() {
     fetch("http://localhost:8000/api/data")
       .then((res) => res.json())
       .then((data) => {
+        console.log("data:",data);
         setDataSales(data.salesReps || []);
         setLoading(false);
       })
@@ -44,9 +49,31 @@ export default function Home() {
         ) : (
           <ul>
             {dataSales.map((item) => (
-              <li key={item.id}>
-                {item.name} - {item.role}
-              </li>
+              <section key={item.id}>
+                <section>
+                  <h5>
+                    name : {item.name}
+                  </h5>
+                  <h5>
+                    role : {item.role}
+                  </h5>
+                  <h5>
+                    region : {item.region}
+                  </h5>
+                </section>
+                <section style={{display:'flex', flexDirection:'row',  alignItems:'center'}}>
+                  <h5>
+                    Skill :
+                  </h5>
+                  <section style={{marginLeft:10, display:'flex', flexDirection:'row', flexWrap:'wrap', }}>
+                    {item.skills.map((skill, index) => (
+                      <Chip isRandomColor={true} fontColor={Colors.darkgray} key={index} title={skill} borderRadius={5} />
+                    ))}
+                  </section>
+                </section>
+                <DealSection items={item.deals} />
+                <ClientSection items={item.clients} />
+              </section>
             ))}
           </ul>
         )}
