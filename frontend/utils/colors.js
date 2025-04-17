@@ -7,7 +7,7 @@ export const Colors = {
     pink : '#ef476f',
     orange : '#ED5314',
     blue : '#666DCB',
-    green : '#9BCA3E',
+    green : '#238443',
     yellow : '#ffd166',
     darkgray: '#616161',
     tableDealHead: '#0041C7',

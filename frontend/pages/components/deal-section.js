@@ -14,7 +14,7 @@ export default function DealSection({items}) {
         }
         return (
             <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
-                <Chip height={22} width={120} title={status} backgroundColor={color} />
+                <Chip height={22} marginBottom={0} marginTop={0} width={120} title={status} backgroundColor={color} />
             </div>
             
         );
@@ -42,9 +42,9 @@ export default function DealSection({items}) {
                 <thead>
                     <tr  style={Style.trHead}>
                         <th style={{width:40, height:30, padding:5}}>No</th>
-                        <th style={{width:220, padding:5}}>Client</th>
-                        <th style={{width:120, padding:5}}>Value</th>
-                        <th style={{width:140, padding:5}}>Status</th>
+                        <th style={{width:240, padding:5}}>Client</th>
+                        <th style={{width:170, padding:5}}>Value</th>
+                        <th style={{width:190, padding:5}}>Status</th>
                     </tr>
                 </thead>
                 <tbody >
@@ -76,9 +76,10 @@ const Style = {
     trHead : {
         textAlign:'left',
         borderCollapse:"collapse",
-        backgroundColor:Colors.success
+        backgroundColor:Colors.green
     },
     td : {
         padding:5,
+        height:30
     }
 }

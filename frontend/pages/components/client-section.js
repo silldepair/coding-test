@@ -47,6 +47,8 @@ const Style = {
         backgroundColor:Colors.tableClientHead
     },
     td : {
-        padding:5,
+        paddingLeft:5,
+        paddingRight:5,
+        height:35
     }
 }
