@@ -13,32 +13,47 @@ export default function DealSection({items}) {
             color = Colors.warning
         }
         return (
-            <Chip height={22} title={status} backgroundColor={color} />
+            <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-start'}}>
+                <Chip height={22} width={120} title={status} backgroundColor={color} />
+            </div>
+            
         );
     }
 
+    function generateBgRowStatus(status){
+        var color = Colors.tableDealSuccess
+        if(status.toLowerCase() == 'closed lost'){
+            color = Colors.tableDealLost
+        }
+        if(status.toLowerCase() == 'in progress'){
+            color = Colors.tableDealProgress
+        }
+        return color;
+    }
+    
+
     return (
         <section>
-            <h5>
+            <p>
             Deal :
-            </h5>
+            </p>
             <section>
-            <table>
+            <table style={Style.table}>
                 <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Client</th>
-                        <th>Value</th>
-                        <th>Status</th>
+                    <tr  style={Style.trHead}>
+                        <th style={{width:40, height:30, padding:5}}>No</th>
+                        <th style={{width:220, padding:5}}>Client</th>
+                        <th style={{width:120, padding:5}}>Value</th>
+                        <th style={{width:140, padding:5}}>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody >
                     {items.map((item, index)=>(
-                    <tr key={index}>
-                        <td>{index+1}</td>
-                        <td>{item.client}</td>
-                        <td>{item.value}</td>
-                        <td>{generateBadgeStatus(item.status)}</td>
+                    <tr key={index}  style={{color:Colors.darkgray, backgroundColor:generateBgRowStatus(item.status)}}>
+                        <td style={Style.td}>{index+1}</td>
+                        <td style={Style.td}>{item.client}</td>
+                        <td style={Style.td}>{item.value}</td>
+                        <td style={Style.td}>{generateBadgeStatus(item.status)}</td>
                     </tr>
                     ))}
                 </tbody>
@@ -47,4 +62,23 @@ export default function DealSection({items}) {
             </section>
         </section>
     );
+
+    
+}
+
+const Style = {
+    table:{
+        color:"white",
+        borderCollapse:"collapse",
+        backgroundColor:Colors.tableDealOdd,
+        fontWeight:'bold'
+    },
+    trHead : {
+        textAlign:'left',
+        borderCollapse:"collapse",
+        backgroundColor:Colors.success
+    },
+    td : {
+        padding:5,
+    }
 }
