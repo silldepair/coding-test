@@ -9,7 +9,6 @@ export default function Chip({title="", isOutline=false, borderWidth=1, isRandom
         var pallete = [ Colors.success, Colors.blue, Colors.tableDealHead, Colors.danger,];
         if(title.length>0){
             var index = Math.floor((title.toLocaleLowerCase().charCodeAt(0) - 97 + 1)/(26/pallete.length));
-            console.log('indexcolor:',index);
             backgroundColor = pallete[index];
         }
         if(isOutline){

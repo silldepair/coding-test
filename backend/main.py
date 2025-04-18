@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import json
 
 app = FastAPI()
-
+error_msg = ""
+status_code = 200
+DUMMY_DATA = []
 #cors for next js default port and host
 origins = ["http://localhost:3000"]
 app.add_middleware(
@@ -15,16 +17,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+try:
 # Load dummy data
-with open("dummyData.json", "r") as f:
-    DUMMY_DATA = json.load(f)
+    with open("dummyData.json", "r") as f:
+        DUMMY_DATA = json.load(f)
+except (FileNotFoundError, PermissionError, OSError):
+    error_msg = "Connection to database is lost"
+    status_code = 500
 
 @app.get("/api/data")
 def get_data():
     """
-    Returns dummy data (e.g., list of users).
+    Returns data of marketer, clients, and sales with status
     """
-    return DUMMY_DATA
+    if len(DUMMY_DATA) > 0 :
+        return DUMMY_DATA
+    else :
+        raise HTTPException(status_code=500, detail={"code":status_code, "message":error_msg})
 
 @app.post("/api/ai")
 async def ai_endpoint(request: Request):

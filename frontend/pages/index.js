@@ -4,13 +4,14 @@ import DealSection from "./components/deal-section";
 import ClientSection from "./components/client-section";
 import Divider from "./components/divider";
 import { Colors } from "../utils/colors";
-import RingLoader from "react-spinners/RingLoader";
 import ErorPage from "./components/eror-page";
+import Loading from "./components/loading";
 
 export default function Home() {
   const [dataSales, setDataSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
@@ -20,6 +21,7 @@ export default function Home() {
 
   const getDataSales = async () => {
     setLoading(true);
+    setIsError(false);
     fetch("http://localhost:8000/api/data")
       .then((res) => res.json())
       .then((data) => {
@@ -28,6 +30,7 @@ export default function Home() {
         setLoading(false);
         if(!data?.salesReps){
           setIsError(true);
+          setErrorMessage(data?.detail?.message);
         }
       })
       .catch((err) => {
@@ -53,7 +56,7 @@ export default function Home() {
 
   if(isError){
     return(
-      <ErorPage callback={getDataSales}/>
+      <ErorPage title={errorMessage} fontColor={Colors.cyan} callback={getDataSales}/>
     );
   }
 
@@ -64,11 +67,7 @@ export default function Home() {
 
         <section style={{ marginBottom: "2rem", }}>
           {loading ? (
-            <RingLoader
-              color={Colors.blue}
-              loading={loading}
-              size={250}
-            />
+            <Loading loading={loading} />
           ) : (
             <section>
               {dataSales.map((item) => (
