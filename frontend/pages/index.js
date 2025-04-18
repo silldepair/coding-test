@@ -6,10 +6,12 @@ import Divider from "./components/divider";
 import { Colors } from "../utils/colors";
 import ErorPage from "./components/eror-page";
 import Loading from "./components/loading";
+import AiSection from "./components/ai-section";
 
 export default function Home() {
   const [dataSales, setDataSales] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingAi, setLoadingAi] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [question, setQuestion] = useState("");
@@ -40,16 +42,26 @@ export default function Home() {
       });
   }
 
+  const clear = () => {
+    setAnswer("");
+    setQuestion("");
+    setLoadingAi(false);
+  }
+
   const handleAskQuestion = async () => {
     try {
+      setLoadingAi(true);
       const response = await fetch("http://localhost:8000/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
       });
       const data = await response.json();
+      console.log("data:",data);
       setAnswer(data.answer);
+      setLoadingAi(false);
     } catch (error) {
+      setLoadingAi(false);
       console.error("Error in AI request:", error);
     }
   };
@@ -63,8 +75,8 @@ export default function Home() {
   return (
     <div style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
       <div style={{ padding: "2rem", fontFamily:"Arial" }}>
-        <h1 style={{textAlign:'center'}}>Sales Dashboard</h1>
-
+        <p style={{textAlign:'center', fontWeight:'bold', fontSize:30, marginBottom:5}}>Sales Dashboard</p>
+        <AiSection clear={clear} loading={loadingAi} answer={answer} setQuestion={setQuestion} handleAskQuestion={handleAskQuestion} question={question} />
         <section style={{ marginBottom: "2rem", }}>
           {loading ? (
             <Loading loading={loading} />
@@ -97,24 +109,6 @@ export default function Home() {
                 </section>
               ))}
             </section>
-          )}
-        </section>
-
-        <section>
-          <h2>Ask a Question (AI Endpoint)</h2>
-          <div>
-            <input
-              type="text"
-              placeholder="Enter your question..."
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-            <button onClick={handleAskQuestion}>Ask</button>
-          </div>
-          {answer && (
-            <div style={{ marginTop: "1rem" }}>
-              <strong>AI Response:</strong> {answer}
-            </div>
           )}
         </section>
       </div>

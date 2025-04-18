@@ -1,5 +1,4 @@
 import { Colors } from "../../utils/colors";
-import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 import RingLoader from "react-spinners/RingLoader";
 
 export default function Loading({size=75,color=Colors.blue, loading=false, marginTop=5, marginBottom=5, marginLeft=5, marginRight=5}) {
